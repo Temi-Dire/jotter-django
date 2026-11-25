@@ -1,0 +1,32 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Create account{% endblock %}
+
+{% block content %}
+<section class="auth">
+  <div class="auth-card">
+    <h1>Create your account</h1>
+    <p class="muted">It takes less than a minute.</p>
+
+    <form method="post" novalidate>
+      {% csrf_token %}
+      {% if form.non_field_errors %}
+        <div class="alert alert-error">{{ form.non_field_errors|join:" " }}</div>
+      {% endif %}
+
+      <div class="row-2">
+        {% include 'core/_field.html' with field=form.first_name %}
+        {% include 'core/_field.html' with field=form.last_name %}
+      </div>
+      {% include 'core/_field.html' with field=form.username %}
+      {% include 'core/_field.html' with field=form.email show_help=True %}
+      {% include 'core/_field.html' with field=form.password1 %}
+      {% include 'core/_field.html' with field=form.password2 %}
+
+      <button type="submit" class="btn btn-primary btn-block">Create account</button>
+    </form>
+
+    <p class="auth-switch">Already have an account? <a href="{% url 'login' %}">Log in</a></p>
+  </div>
+</section>
+{% endblock %}

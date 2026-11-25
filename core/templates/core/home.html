@@ -1,0 +1,60 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <div class="container hero-inner">
+    <p class="eyebrow">A simple place to write</p>
+    <h1>Capture your ideas.<br>Share them when they're ready.</h1>
+    <p class="lead">Jotter is a clean, distraction-free space for short posts and notes. Create an account, verify your email, and start writing in under a minute.</p>
+    <div class="hero-actions">
+      {% if user.is_authenticated %}
+        <a href="{% url 'dashboard' %}" class="btn btn-primary btn-lg">Go to your dashboard</a>
+      {% else %}
+        <a href="{% url 'register' %}" class="btn btn-primary btn-lg">Create a free account</a>
+        <a href="{% url 'login' %}" class="btn btn-outline btn-lg">I already have one</a>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<section class="container features">
+  <article class="feature">
+    <div class="feature-icon">1</div>
+    <h3>Sign up</h3>
+    <p>Register with your name, username and email address.</p>
+  </article>
+  <article class="feature">
+    <div class="feature-icon">2</div>
+    <h3>Verify your email</h3>
+    <p>We send a 6-digit code to your inbox so we know the address is really yours.</p>
+  </article>
+  <article class="feature">
+    <div class="feature-icon">3</div>
+    <h3>Start writing</h3>
+    <p>Your dashboard shows your profile and every post you've published.</p>
+  </article>
+</section>
+
+<section class="container latest">
+  <div class="section-head">
+    <h2>Latest posts</h2>
+  </div>
+  {% if latest_posts %}
+    <div class="post-grid">
+      {% for post in latest_posts %}
+        <article class="post-card">
+          <p class="post-meta">{{ post.author.get_full_name|default:post.author.username|default:"Jotter" }} · {{ post.created_at|date:"j M Y" }}</p>
+          <h3>{{ post.title }}</h3>
+          <p>{{ post.body|truncatewords:25 }}</p>
+        </article>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="empty">
+      <p>No posts yet. Be the first to write one.</p>
+    </div>
+  {% endif %}
+</section>
+{% endblock %}

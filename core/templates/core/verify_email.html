@@ -1,0 +1,29 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Verify your email{% endblock %}
+
+{% block content %}
+<section class="auth">
+  <div class="auth-card">
+    <div class="auth-icon">✉</div>
+    <h1>Check your email</h1>
+    <p class="muted">We sent a 6-digit code to <strong>{{ email }}</strong>. Enter it below to verify your account.</p>
+
+    <form method="post" novalidate>
+      {% csrf_token %}
+      {% include 'core/_field.html' with field=form.code %}
+      <button type="submit" class="btn btn-primary btn-block">Verify email</button>
+    </form>
+
+    <form method="post" action="{% url 'resend_otp' %}" class="resend">
+      {% csrf_token %}
+      <span class="muted">Didn't get it?</span>
+      {% if resend_wait %}
+        <button type="submit" class="link-button" disabled>Resend in {{ resend_wait }}s</button>
+      {% else %}
+        <button type="submit" class="link-button">Send a new code</button>
+      {% endif %}
+    </form>
+  </div>
+</section>
+{% endblock %}
